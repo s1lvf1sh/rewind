@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rewind: a time-travelling debugger</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>Rewind</h1>
+      <p>Run a program once, then travel anywhere in its history and ask where any value came from.</p>
+    </div>
+    <div class="actions">
+      <label>Example
+        <select id="example"></select>
+      </label>
+      <button id="edit" title="Edit the program">Edit</button>
+      <button id="run" class="primary" title="Run (Ctrl+Enter)">Run ▸</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="left">
+      <div id="hint" class="hint"></div>
+      <div class="panel code-panel">
+        <div id="error" class="error" hidden></div>
+        <div id="code-view" class="code-view" aria-label="Program"></div>
+        <div id="editor-wrap" class="editor-wrap" hidden>
+          <pre id="editor-gutter" class="editor-gutter" aria-hidden="true"></pre>
+          <textarea id="editor" spellcheck="false" aria-label="Program source"></textarea>
+        </div>
+      </div>
+      <div class="panel timeline">
+        <div class="transport" role="toolbar" aria-label="Time travel">
+          <button data-move="start" title="Beginning (Home)">⏮</button>
+          <button data-move="continue-back" title="Back to the previous breakpoint">◀▮</button>
+          <button data-move="out-back" title="Back out: to where this function was called">↰</button>
+          <button data-move="over-back" title="Back over calls (Shift+←)">◀◀</button>
+          <button data-move="back" title="Step back (←)">◀</button>
+          <button data-move="forward" title="Step forward (→)">▶</button>
+          <button data-move="over" title="Step over calls (Shift+→)">▶▶</button>
+          <button data-move="out" title="Step out of this function">↱</button>
+          <button data-move="continue" title="On to the next breakpoint">▮▶</button>
+          <button data-move="end" title="End (End)">⏭</button>
+        </div>
+        <input id="slider" type="range" min="0" max="0" value="0" aria-label="Position in time" />
+        <canvas id="strip" height="44" aria-hidden="true"></canvas>
+        <div id="where" class="where"></div>
+      </div>
+    </section>
+
+    <section class="right">
+      <div class="panel">
+        <h2>Call stack &amp; variables</h2>
+        <div id="vars"></div>
+      </div>
+      <div class="panel">
+        <h2>Output</h2>
+        <div id="output" class="output"></div>
+      </div>
+      <div class="panel why-panel">
+        <h2>Why?</h2>
+        <div id="why"><p class="muted">Click any variable, list item or line of output to see where its value came from.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <details class="about">
+    <summary>How it works</summary>
+    <div>
+      <p><strong>Record once, travel anywhere.</strong> The interpreter never changes the program's state directly. Every change is a <em>write</em> (a variable set, a list item stored, a call made, a line printed), and each write knows how to undo itself. Running records them all in order. Moving through time applies writes forward or undoes them backward, so any step can be reached exactly, without rerunning anything.</p>
+      <p><strong>Every value remembers its ingredients.</strong> Each write also records which earlier writes its value was computed from (data flow), which ones chose where it was read from (list indexes), and which ones controlled whether the code ran at all (conditions). "Why?" follows these links backwards: through arithmetic, through function calls and returns, and through lists.</p>
+      <p><strong>The language</strong> has numbers, strings, booleans, <code>nil</code>, lists, functions with closures, <code>let</code>, <code>if</code>/<code>else</code>, <code>while</code>, <code>for x in list</code>, <code>break</code>, <code>continue</code> and <code>return</code>. Built-ins: <code>print len push pop range str abs floor sqrt min max</code>. Conditions must be <code>true</code> or <code>false</code>; it will not guess.</p>
+      <p><strong>Keys:</strong> ← → step, Shift+← → step over calls, Home/End, Ctrl+Enter to run. Click a line number to set a breakpoint.</p>
+    </div>
+  </details>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

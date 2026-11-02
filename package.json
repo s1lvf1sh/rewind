@@ -1,0 +1,12 @@
+{
+  "name": "rewind",
+  "version": "1.0.0",
+  "description": "A small programming language with a time-travelling debugger: record a run once, move anywhere in its history, and ask where any value came from.",
+  "type": "module",
+  "scripts": {
+    "start": "node serve.mjs",
+    "test": "node test/rewind.test.mjs",
+    "test:browser": "node test/browser.test.mjs"
+  },
+  "license": "MIT"
+}
