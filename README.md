@@ -8,6 +8,8 @@ npm test             # 19 checks on the language, time travel, provenance and mo
 npm run test:browser # 16 checks driving the real page in headless Firefox
 ```
 
+**[Try it live](https://s1lvf1sh.github.io/rewind/)**
+
 No dependencies and no build step.
 
 ## Try the bug hunts

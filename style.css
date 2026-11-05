@@ -140,3 +140,5 @@ textarea {
 .about summary { cursor: pointer; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; }
 .about p { max-width: 900px; }
 code { font-family: var(--mono); }
+footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 0 22px; }
+footer a { color: var(--accent); }
